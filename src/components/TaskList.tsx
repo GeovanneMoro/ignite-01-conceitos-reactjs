@@ -14,26 +14,29 @@ export function TaskList() {
   const [newTaskTitle, setNewTaskTitle] = useState('');
 
   function handleCreateNewTask() {
-    if (newTaskTitle === '') return;
+    if (!newTaskTitle) return;
 
     const newTask = {
       id: Math.random() * 100,
       title: newTaskTitle,
       isComplete: false,
     };
-    console.log(newTask);
     setTasks([...tasks, newTask]);
+    setNewTaskTitle('');
   }
 
   function handleToggleTaskCompletion(id: number) {
-    const filterTask = tasks.findIndex((task) => task.id === id);
-    tasks[filterTask].isComplete = true;
-    setTasks([...tasks]);
+    const newTasks = tasks.map((task) =>
+      task.id === id ? { ...task, isComplete: !task.isComplete } : task,
+    );
+    // const filterTask = tasks.findIndex((task) => task.id === id);
+    // tasks[filterTask].isComplete = true;
+    setTasks(newTasks);
   }
 
   function handleRemoveTask(id: number) {
     const filterTasks = tasks.filter((task) => task.id !== id);
-    setTasks([...filterTasks]);
+    setTasks(filterTasks);
   }
 
   return (
@@ -61,7 +64,7 @@ export function TaskList() {
       <main>
         <ul>
           {tasks.map((task) => (
-            <li key={task.id} className={task.isOut ? 'saiu' : ''}>
+            <li key={task.id}>
               <div
                 className={task.isComplete ? 'completed' : ''}
                 data-testid="task"
