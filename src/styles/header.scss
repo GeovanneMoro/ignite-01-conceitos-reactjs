@@ -1,7 +1,7 @@
 header.header {
   background: var(--blue);
   padding-top: 2rem;
-  
+
   > div {
     max-width: 1120px;
     margin: 0 auto;
@@ -11,5 +11,15 @@ header.header {
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+}
+
+@media (max-width: 400px) {
+  header.header {
+    padding-top: 2rem;
+
+    > div {
+      padding: 2rem 1rem 7rem;
+    }
   }
 }
