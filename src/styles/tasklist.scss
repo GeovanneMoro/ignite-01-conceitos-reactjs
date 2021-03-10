@@ -48,10 +48,10 @@ section.task-list {
         flex-direction: row;
         align-items: center;
         padding: 0.875rem;
-        transition: filter 0.2s;
+        transition: background 0.2s;
 
         &:hover {
-          filter: brightness(0.95);
+          background: #328a1f;
         }
       }
     }
@@ -62,6 +62,14 @@ section.task-list {
 
     ul {
       list-style: none;
+
+      span {
+        animation: appears 0.5s;
+        width: 100%;
+        display: inline-block;
+        font-size: 1rem;
+        text-align: center;
+      }
 
       div {
         position: relative;
@@ -149,7 +157,7 @@ section.task-list {
 
             &:hover {
               svg {
-                filter: brightness(0.5);
+                color: #8a1f32;
               }
             }
           }
@@ -293,5 +301,14 @@ section.task-list {
         }
       }
     }
+  }
+}
+
+@keyframes appears {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
