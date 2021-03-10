@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { FiTrash, FiCheckSquare } from 'react-icons/fi';
 import { useTransition, animated } from 'react-spring';
+import { v4 } from 'uuid';
 
 import '../styles/tasklist.scss';
 
 interface Task {
-  id: number;
+  id: string;
   title: string;
   isComplete: boolean;
 }
@@ -25,18 +26,18 @@ export function TaskList() {
     enter: { left: '0px', opacity: 1 },
     leave: { left: '-50px', opacity: 0 },
   });
-  console.log(tasksWithTransitions);
   const [newTaskTitle, setNewTaskTitle] = useState('');
 
   useEffect(() => {
     localStorage.setItem('@toDo:tasks', JSON.stringify(tasks));
   }, [tasks]);
 
-  function handleCreateNewTask() {
+  function handleCreateNewTask(e: Event) {
+    e.preventDefault();
     if (!newTaskTitle) return;
 
     const newTask = {
-      id: Math.random() * 100,
+      id: v4(),
       title: newTaskTitle,
       isComplete: false,
     };
@@ -44,16 +45,15 @@ export function TaskList() {
     setNewTaskTitle('');
   }
 
-  function handleToggleTaskCompletion(id: number) {
+  function handleToggleTaskCompletion(id: string) {
     const newTasks = tasks.map((task) =>
       task.id === id ? { ...task, isComplete: !task.isComplete } : task,
     );
-    // const filterTask = tasks.findIndex((task) => task.id === id);
-    // tasks[filterTask].isComplete = true;
+
     setTasks(newTasks);
   }
 
-  function handleRemoveTask(id: number) {
+  function handleRemoveTask(id: string) {
     const filterTasks = tasks.filter((task) => task.id !== id);
     setTasks(filterTasks);
   }
@@ -63,21 +63,17 @@ export function TaskList() {
       <header>
         <h2>Minhas tarefas</h2>
 
-        <div className="input-group">
+        <form className="input-group" onSubmit={handleCreateNewTask}>
           <input
             type="text"
             placeholder="Adicionar novo todo"
             onChange={(e) => setNewTaskTitle(e.target.value)}
             value={newTaskTitle}
           />
-          <button
-            type="submit"
-            data-testid="add-task-button"
-            onClick={handleCreateNewTask}
-          >
+          <button type="submit" data-testid="add-task-button">
             <FiCheckSquare size={16} color="#fff" />
           </button>
-        </div>
+        </form>
       </header>
 
       <main>
